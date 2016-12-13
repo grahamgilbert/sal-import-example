@@ -4,13 +4,13 @@ import os
 import csv
 
 class Command(BaseCommand):
-    args = '<path/to/csv>'
     help = 'Creates Business Units and Machine Groups from a CSV'
 
+    def add_arguments(self, parser):
+        parser.add_argument("path", nargs="+")
+
     def handle(self, *args, **options):
-        if len(args) != 1:
-            raise CommandError('More than one argument passed')
-        for path in args:
+        for path in options["path"]:
             if os.path.exists(path):
                 with open(path, 'rb') as csvfile:
                     csv_data = csv.DictReader(csvfile, delimiter=',')
